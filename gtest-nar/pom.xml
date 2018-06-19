@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.google</groupId>
+	<artifactId>gtest</artifactId>
+	<packaging>nar</packaging>
+	<version>1.8.0</version>
+
+	<properties>
+		<!-- General project -->
+		<skipTests>true</skipTests>
+	    <!-- parent POM will disable deployment to make sure no useless artifacts will be deployed
+	    however we reenable deployment here, to be able to deploy new builds of the engine in
+	    artifactory -->
+	    <skipDeploy>false</skipDeploy>
+
+	    <!-- Maven plugin versions-->
+	    <nar-plugin.version>3.5.1</nar-plugin.version>
+
+	    <!-- native props -->
+    	<compiler-name>g++</compiler-name>
+	    <linker-name>g++</linker-name>
+	</properties>
+
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>com.github.maven-nar</groupId>
+				<artifactId>nar-maven-plugin</artifactId>
+				<version>${nar-plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<cpp>
+						<name>${compiler-name}</name>
+						<debug>true</debug>
+						<includes>
+							<include>**/*.h</include>
+							<include>**/*.cc</include>
+						</includes>
+						<options>
+							<option>-std=c++11</option>
+						</options>
+					</cpp>
+
+					<libraries>
+						<library>
+							<type>shared</type>
+						</library>
+					</libraries>
+
+					<linker>
+						<name>${linker-name}</name>
+					</linker>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
